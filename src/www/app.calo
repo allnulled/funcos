@@ -1,0 +1,243 @@
+Empaquetable con:
+  ./components/Castelog_parser.js
+Ejecutable como documento HTML5
+    con autor allnulled
+    con nombre app-por-defecto
+    con versión 0.0.1
+<head>
+    <title>☣ FuncOS ☣</title>
+    <meta charset="utf8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./components/estilos.css" />
+    <style>
+      .w_100 { width:100%; }
+      .caja_de_dato {
+        display: inline-block;
+        padding: 1px;
+        text-align: justify;
+      }
+      .link_a_dato {
+        display: inline-block;
+        padding:2px;
+        border: 1px solid #CCC;
+        border-radius: 2pt;
+      }
+      .indice_de_dato {
+        font-size: 9px;
+      }
+      .nombre_de_dato {
+        display: inline-block;
+        text-decoration:underline;
+      }
+      .tipo_de_dato {
+        display: inline-block;
+        background-color: #333;
+        color: white;
+        padding: 1px;
+        border-radius: 3pt;
+        font-size: 10px;
+      }
+      .win7 .window-body pre {
+        margin: 0 !important;
+      }
+      .win7 .linea_de_aportacion {
+        padding: 8px;
+        border-bottom: 1px solid #DDD;
+      }
+      .win7 .codigo_fuente {
+        font-size: 9px !important;
+        padding: 2px !important;
+        background-color: #333 !important;
+        color: white !important;
+      }
+    </style>
+</head>
+<body><div id="app"></div></body>.
+
+importo api nativa.
+
+creo FuncOsConsola como un componente vue2 con nombre "FuncOsConsola" con plantilla {
+  <div class="FuncOsConsola Component win7">
+    <div class="window">
+        <div class="title-bar">
+            <div class="title-bar-text">☣ FuncOS | Consola ☣</div>
+        </div>
+        <div class="window-body">
+          <div class="horizontal_layout">
+            <input class="w_100" type="text" v-model="entrada_principal" v-on:keydown.enter="ejecutar_comando" placeholder="?buscar | >acceder | !ejecutar: parametro1, parametro2 | calo | js" />
+          </div>
+          <div class="titulo_de_ventanuco">
+            <span class="tipo_de_dato"> [{{ typeof base_ontologica }}]</span>
+            <template v-for="nombre, nombre_index in base_ontologica_nominal">
+              <span v-if="nombre_index !== 0" v-bind:key="'miga-de-pan-de-base-ontologica-nominal-intersigno-' + nombre_index"> « </span>
+              <button v-on:click="() => acceder_a_ontologia_anterior_especifica(nombre_index)" v-bind:key="'miga-de-pan-de-base-ontologica-nominal-nombre-' + nombre_index">
+              {{ nombre }}
+              </button>
+            </template>
+          </div>
+          <div class="linea_de_aportacion" v-if="typeof base_ontologica === 'object'">
+            El objeto tiene {{ ontologias_accesibles.length }} propiedades.
+          </div>
+          <div class="linea_de_aportacion" v-if="typeof base_ontologica === 'function'">
+            La función tiene {{ ontologias_accesibles.length }} propiedades.
+          </div>
+          <div class="linea_de_aportacion" v-if="typeof base_ontologica === 'function'">
+            <details>
+              <summary style="display: inline-block; padding:5px; border: 1px solid #DDD;">
+                Código
+              </summary>
+              <div>
+                <textarea class="w_100 codigo_fuente" style="min-height:120px;" :value="base_ontologica.toString()"></textarea>
+              </div>
+            </details>
+          </div>
+          <div class="linea_de_aportacion" v-if="typeof base_ontologica === 'object' || typeof base_ontologica === 'function'">
+            <div>
+              <span class="caja_de_dato"  v-if="base_ontologica_nominal && base_ontologica_nominal.length && (base_ontologica_nominal.length > 1)">
+                <button v-on:click="() => acceder_a_ontologia_anterior()">
+                  ...anterior
+                </button>
+              </span>
+              <span class="caja_de_dato" v-for="ontologia_accesible, ontologia_index in ontologias_accesibles" style="">
+                <button class="link_a_dato" v-on:click="() => acceder_a_ontologia(ontologia_accesible)">
+                  <span class="indice_de_dato">{{ ontologia_index + 1 }}) </span>
+                  <span class="nombre_de_dato">{{ ontologia_accesible }} </span>
+                  <span class="tipo_de_dato"> [{{ typeof base_ontologica[ontologia_accesible] }}]</span>
+                </button>
+              </span>
+            </div>
+          </div>
+          <div v-if="['boolean','number','undefined'].indexOf(typeof base_ontologica) !== -1">
+            <span class="tipo_de_dato"> [{{ typeof base_ontologica }}]</span>
+            <textarea class="w_100 codigo_fuente" style="min-height:120px;" :value="base_ontologica"></textarea>
+          </div>
+          <div v-if="['string'].indexOf(typeof base_ontologica) !== -1">
+            <span class="tipo_de_dato"> [{{ typeof base_ontologica }}]</span>
+            <textarea ref="valor_de_base_ontologica" class="w_100 codigo_fuente" style="min-height:120px;" :value="JSON.stringify(base_ontologica)" v-on:input="asignar_valor_a_base"></textarea>
+          </div>
+        </div>
+        <div class="status-bar">
+            <div class="status-bar-field">
+              <span style="font-size: 9px;">✔ FuncOS está funccionando correctamente.</span>
+            </div>
+        </div>
+    </div>
+  </div>
+} con lógica {
+  retorno {
+    método data donde {
+      retorno {
+        entrada_principal: "",
+        base_ontologica_origen: window,
+        base_ontologica_nominal: ["window"],
+        base_ontologica: undefined,
+        comandos_disponibles: [],
+        ontologias_accesibles: [],
+        esta_mostrando_codigo_de_funcion: false,
+        temporizador_de_asignacion_de_valor_a_base: undefined,
+        temporizador_de_asignacion_de_valor_a_base_tiempo: 1000 * 3
+      }.
+    }.
+    propiedad methods como {
+      asignar_valor_a_base: una función donde {
+        hago clearTimeout(this.temporizador_de_asignacion_de_valor_a_base).
+        asigno this.temporizador_de_asignacion_de_valor_a_base como setTimeout(una lambda donde {
+          creo codigo_calo como this.$refs.valor_de_base_ontologica.value.
+          creo codigo_js_bruto como Castelog_parser.parse(`retorno ` + codigo_calo + ".").
+          creo codigo_js como codigo_js_bruto.trim()
+            .replace(una nueva RegExp("return ","g"), "")
+            .replace(una nueva RegExp(";$","g"), "").
+          creo codigo_js_entrada como `(async() => { return ${codigo_js} })()`.
+          imprimo codigo_js_entrada.
+          creo resultado como eval(codigo_js_entrada).
+          si resultado es instancia de Promise hago resultado.then(una lambda con (resultado_resuelto) donde hago this.actualizar_base_ontologica(resultado_resuelto));
+          y si no hago this.actualizar_base_ontologica(resultado).
+          asigno this.temporizador_de_asignacion_de_valor_a_base como undefined.
+        } en errores {
+          imprimo error.
+          hago this.mostrar_error(error).
+        }, this.temporizador_de_asignacion_de_valor_a_base_tiempo).
+      },
+      mostrar_error: una función con (error) donde {
+
+      },
+      alternar_mostrando_codigo_de_funcion: una función donde {
+        asigno this.esta_mostrando_codigo_de_funcion como no this.esta_mostrando_codigo_de_funcion.
+      },
+      actualizar_base_ontologica: una función con (valor_destino o en su defecto undefined) donde {
+        creo variable pivote como this.base_ontologica_origen.
+        desde 0 hasta this.base_ontologica_nominal.length {
+          creo nombre como this.base_ontologica_nominal[index].
+          si (valor_destino no es tipo indefinido) y (index es igual que this.base_ontologica_nominal.length - 1) {
+            asigno pivote[nombre] como valor_destino.
+          }.
+          asigno pivote como pivote[nombre].
+        }.
+        imprimo "Cambiando valor de base ontológica:".
+        asigno this.base_ontologica como pivote.
+        imprimo this.base_ontologica.
+      },
+      ejecutar_comando: una función donde {
+        imprimo "ejecutando comando: " + this.entrada_principal.
+      },
+      acceder_a_ontologia_anterior_especifica: una función con (indice) donde {
+        hago this.base_ontologica_nominal.splice(indice+1).
+        hago this.$forceUpdate(true).
+      },
+      acceder_a_ontologia_anterior: una función donde {
+        hago this.base_ontologica_nominal.pop().
+        hago this.$forceUpdate(true).
+      },
+      acceder_a_ontologia: una función con (ontologia_id) donde {
+        hago this.base_ontologica_nominal.push(ontologia_id).
+        hago this.$forceUpdate(true).
+      }
+    }.
+    propiedad watch como {
+      base_ontologica_nominal: una función con (nuevo_valor) donde {
+        hago this.actualizar_base_ontologica().
+      },
+      base_ontologica: una función con (nuevo_valor) donde {
+        asigno this.ontologias_accesibles como [].
+        asigno this.ontologias_accesibles como (un conjunto de claves del objeto nuevo_valor).sort().
+      } en errores {
+
+      }
+    }.
+    método mounted donde {
+      hago this.actualizar_base_ontologica().
+    }.
+  }.
+}.
+
+creo App como una aplicación vue2 con nombre "App" con rutas [{
+    propiedad path como "/".
+    propiedad name como "Home".
+    propiedad component como FuncOsConsola.
+    propiedad props como {}.
+}] con traducciones {
+    propiedad es como {}.
+    propiedad en como {}.
+    propiedad ca como {}.
+} con plantilla {
+  <div class="App Component Castelog-app">
+    <router-view></router-view>
+  </div>
+} con estilos {
+    html {}
+    body {}
+    .Component {}
+    .App {}
+} con lógica {
+  retorno {
+    método data donde {
+      retorno {
+        
+      }.
+    }.
+    propiedad methods como {}.
+    propiedad watch como {}.
+    método beforeMount donde {}.
+    método mounted donde {}.
+  }.
+} montada en "#app".

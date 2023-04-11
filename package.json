@@ -1,0 +1,15 @@
+{
+  "name": "explorador-de-codigo",
+  "version": "1.0.0",
+  "main": "docs/index.html",
+  "scripts": {
+    "test": "npx http-server -c-1 src/www"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "directories": {
+    "doc": "docs"
+  },
+  "description": ""
+}
